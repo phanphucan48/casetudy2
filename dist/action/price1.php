@@ -1,11 +1,15 @@
 <?php
-include "./connect.php";
-session_start();
-$query = "SELECT * FROM cuahangdienthoai.product where idbrank = 3;";
-$result = $pdo->query($query);
-// $result = $stmt->fetchAll();
-// die(var_dump($result));
+require_once "../database/connect.php";
+require_once "../database/product.php";
+require_once "../database/common.php";
+
+$price = new Product;
+$price = $price->price1();
+
+
+
 ?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,43 +33,42 @@ $result = $pdo->query($query);
 
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-
-        <a class="navbar-brand btn btn-warning" href="sanpham.php">Trở Lại</a>
+        <a class="navbar-brand btn btn-warning" href="../index.php">Trở Lại</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
+
     </nav>
 
     <div class="container" style="margin-top:30px">
-        <h2 class="text-success"><strong>Điện thoại nỗi bật :</strong> </h2>
-        <div class="row">
-            <div class="row">
-                <?php foreach ($result as $product) : ?>
-                    <div class="col-md-3 col-ms-6 col-12">
-                        <div class="card card-product mb-3">
-                            <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
-                                <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
-                                <form action="product/showproduct.php" method="post">
-                                    <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
+        <!-- <h2 class="text-success"><strong>Điện thoại nỗi bật :</strong> </h2> -->
 
-                                    <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
-                                </form>
-                                <!-- <a href="product/showproduct.php" class="btn btn-primary">Mua Ngay</a> -->
-                            </div>
+        <div class="row">
+            <?php foreach ($price as $product) : ?>
+                <div class="col-md-3 col-ms-6 col-12">
+                    <div class="card card-product mb-3">
+                        <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
+                            <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
+                            <form action="showproduct.php" method="post">
+                                <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
+
+                                <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
+                            </form>
+                            <!-- <a href="product/showproduct.php" class="btn btn-primary">Mua Ngay</a> -->
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
 
 
-</body>
 
+</body>
 <div class="jumbotron text-center " style="margin-bottom:0">
     <footer class="page-footer font-small indigo bg-warning">
 

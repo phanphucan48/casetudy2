@@ -1,11 +1,11 @@
 <?php
-include "./connect.php";
-// include "./Dashboard.php";
+require_once "database/connect.php";
+
 $idEdit = $_GET['idEdit'];
 $query = "SELECT * FROM cuahangdienthoai.product WHERE idProduct = $idEdit;";
 $stmt = $pdo->query($query);
 $stmt = $stmt->fetch();
-// die(var_dump($stmt));
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt['ProductName'] = $_POST['productname'];
@@ -26,13 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     `brank` = '" . $stmt['brank'] . "' WHERE (`idProduct` = '$idEdit')
     ";
 
-    // die(var_dump($stmt['price']));
+
     $stmt = $pdo->query($query);
     if ($query) {
         header("location:./Dashboard.php ");
     }
-
-    // die(var_dump($stmt));
 }
 
 
@@ -44,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="css/styles.css" rel="stylesheet" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>

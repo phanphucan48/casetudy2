@@ -1,12 +1,19 @@
  <?php
-    include "./connect.php";
-    session_start();
-    if (!isset($_SESSION['login_user'])) {
-        header('location:login.php');
-    }
-    $sql = "SELECT * FROM cuahangdienthoai.product LIMIT 10";
-    $result = $pdo->query($sql);
-    $result = $result->fetchAll();
+    require_once "database/connect.php";
+    require_once "database/product.php";
+    require_once "database/common.php";
+    if (!isset($_SESSION['user'])) {
+        header('Location: action/login.php');
+    };
+    // if (!isset($_SESSION['login_user'])) {
+    //     header('location:login.php');
+    // }
+    $dashboard = new Product;
+    $result = $dashboard->getAll();
+    // die(var_dump($result));
+    // $sql = "SELECT * FROM cuahangdienthoai.product ";
+    // $result = $pdo->query($sql);
+    // $result = $result->fetchAll();
     // die(var_dump($result));
     if (isset($_GET['idDelete'])) {
         $idDelete = $_GET['idDelete'];
@@ -53,7 +60,7 @@
                      <a class="dropdown-item" href="#">Settings</a>
                      <a class="dropdown-item" href="#">Activity Log</a>
                      <div class="dropdown-divider"></div>
-                     <a class="dropdown-item" href="login.php">Logout</a>
+                     <a class="dropdown-item" href="action/login.php">Logout</a>
                  </div>
              </li>
          </ul>
@@ -66,11 +73,11 @@
 
                          <a class="nav-link" href="index.html">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                             Sản Phẩm
+                             Đơn Đặt hàng
                          </a>
                          <a class="nav-link" href="index.html">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                             Tin Tức
+                             Thêm admin
                          </a>
                          <a class="nav-link" href="index.html">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>

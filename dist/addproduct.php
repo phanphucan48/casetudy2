@@ -1,5 +1,5 @@
 <?php
-include "./connect.php";
+require_once "database/connect.php";
 // include "./Dashboard.php";
 
 
@@ -12,8 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $_POST['price'];
     $date = $_POST['date'];
     $brank = $_POST['brank'];
-    $query = "INSERT INTO `cuahangdienthoai`.`product` (`ProductName`, `ImgProduct`, `status`, `SPKM`, `price`, `date`, `brank`)
-     VALUES ( '$productname', '$imgproduct', '$status', '$SPKM', '$price', '$date', '$brank');";
+    $idbrank = $_POST['idbrank'];
+    $query = "INSERT INTO `cuahangdienthoai`.`product` (`ProductName`, `ImgProduct`, `status`, `SPKM`, `price`, `date`, `brank`,`idbrank`)
+     VALUES ( '$productname', '$imgproduct', '$status', '$SPKM', '$price', '$date', '$brank', '$idbrank');";
     try {
         $stmt = $pdo->query($query);
         if ($query) {
@@ -80,6 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="pwd">HangSX:</label>
                 <input type="text" class="form-control" name="brank">
+            </div>
+            <div class="form-group">
+                <label for="pwd">idbanrk:</label>
+                <input type="text" class="form-control" name="idbrank">
             </div>
 
 

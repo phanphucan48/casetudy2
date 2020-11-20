@@ -1,13 +1,10 @@
 <?php
-include "./connect.php";
-session_start();
+require_once "../database/product.php";
+require_once "../database/common.php";
 
-$query = "SELECT * FROM cuahangdienthoai.product;";
-$stmt = $pdo->query($query);
-$stmt = $stmt->fetchAll();
-// die(var_dump($stmt['brank']));
-
-
+$sanpham = new Product;
+$sanpham = $sanpham->getAll();
+// die(var_dump($sanpham));
 
 ?>
 <html lang="en">
@@ -17,9 +14,7 @@ $stmt = $stmt->fetchAll();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <style>
         .fakeimg {
             height: 200px;
@@ -29,8 +24,9 @@ $stmt = $stmt->fetchAll();
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-sm bg-light navbar-dark">
-        <a class="navbar-brand btn btn-danger" href="index.php">Trở Lại</a>
+        <a class="navbar-brand btn btn-danger" href="../index.php">Trở Lại</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -63,14 +59,14 @@ $stmt = $stmt->fetchAll();
 
         <div class="row">
             <div class="row">
-                <?php foreach ($stmt as $product) : ?>
+                <?php foreach ($sanpham as $product) : ?>
                     <div class="col-md-3 col-ms-6 col-12">
                         <div class="card card-product mb-3">
                             <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
                                 <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
-                                <form action="product/showproduct.php" method="post">
+                                <form action="showproduct.php" method="post">
                                     <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
 
                                     <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
@@ -209,6 +205,10 @@ $stmt = $stmt->fetchAll();
         </footer>
     </div>
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

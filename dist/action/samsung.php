@@ -1,28 +1,14 @@
 <?php
-include "./connect.php";
-session_start();
-// $query = "SELECT * FROM cuahangdienthoai.product ;";
+require_once "../database/product.php";
+require_once "../database/common.php";
 
-
-// $stmt = $pdo->query($query);
-// $stmt = $stmt->fetch();
+// $query = "SELECT * FROM cuahangdienthoai.product where idbrank = 2;";
 // $result = $pdo->query($query);
-// $result = $result->fetch();
+// $result = $stmt->fetchAll();
 // die(var_dump($result));
-
-
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $search = $_POST["keyword"];
-    // $query = "SELECT * FROM cuahangdienthoai.product where ProductName = '$search';";
-
-    $query = "SELECT * FROM cuahangdienthoai.product where ProductName LIKE  '%$search%';";
-    $result = $pdo->query($query);
-    $result = $result->fetchAll();
-    // die(var_dump($result));
-}
+$samsung = new Product;
+$samsung = $samsung->samsung();
 ?>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -46,40 +32,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand btn btn-warning" href="index.php">Trở Lại</a>
+        <a class="navbar-brand btn btn-warning" href="sanpham.php">Trở Lại</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
     </nav>
 
     <div class="container" style="margin-top:30px">
-        <!-- <h2 class="text-success"><strong>Điện thoại nỗi bật :</strong> </h2> -->
-
+        <h2 class="text-success"><strong>sản phẩm nổi bật :</strong> </h2>
         <div class="row">
-            <?php foreach ($result as $product) : ?>
-                <div class="col-md-3 col-ms-6 col-12">
-                    <div class="card card-product mb-3">
-                        <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
-                            <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
-                            <form action="product/showproduct.php" method="post">
-                                <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
+            <div class="row">
+                <?php foreach ($samsung as $product) : ?>
+                    <div class="col-md-3 col-ms-6 col-12">
+                        <div class="card card-product mb-3">
+                            <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
+                                <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
+                                <form action="showproduct.php" method="post">
+                                    <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
 
-                                <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
-                            </form>
-                            <!-- <a href="product/showproduct.php" class="btn btn-primary">Mua Ngay</a> -->
+                                    <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
+                                </form>
+                                <!-- <a href="product/showproduct.php" class="btn btn-primary">Mua Ngay</a> -->
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
-
-
-
 
 </body>
 <div class="jumbotron text-center " style="margin-bottom:0">

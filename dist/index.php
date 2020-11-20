@@ -1,11 +1,26 @@
 <?php
-include "./connect.php";
-$query = "SELECT * FROM cuahangdienthoai.product LIMIT 8;";
-$result = $pdo->query($query);
-$result = $result->fetchAll();
-// die(var_dump($result));
-session_start();
+require_once "database/connect.php";
+require_once "database/product.php";
+require_once "database/common.php";
+// require_once "action/login.php";
+// if (isset($_SESSION['cart'])) {
+//   echo "<pre />";
+//   var_dump($_SESSION['cart']);
+// }
 
+
+if (isset($_GET['dangxuat'])) {
+  unset($_SESSION['user']);
+  unset($_SESSION['id']);
+  unset($_SESSION['userphone']);
+}
+
+
+// session_start();
+$product = new Product;
+
+$product = $product->showProduct();
+// die(var_dump($product));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,12 +32,15 @@ session_start();
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 
-
+  <style>
+    .carousel {
+      margin-top: 6rem;
+    }
+  </style>
   <title>Shop</title>
 </head>
 
 <body>
-  <!-- menu -->
   <nav class="navbar navbar-expand-lg navbar-light bg-dark navbar-light">
 
     <div class="container ">
@@ -39,33 +57,53 @@ session_start();
             <a class="nav-link  btn btn-outline-warning font-weight-bold text-light active " href="#"><i class="fas fa-home text-light"></i>Trang chủ </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light btn btn-outline-warning font-weight-bold" href="sanpham.php"><i class="fas fa-mobile-alt text-light"></i>Sản Phẩm</a>
+            <a class="nav-link text-light btn btn-outline-warning font-weight-bold" href="action/sanpham.php"><i class="fas fa-mobile-alt text-light"></i>Sản Phẩm</a>
           </li>
           <!-- <li class="nav-item">
-            <a class="nav-link text-light btn btn-outline-warning font-weight-bold" href="#"><i class="fa fa-hands-helping text-light"></i>Trợ Giúp</a>
-          </li> -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn btn-outline-warning font-weight-bold" href="#" id="navbarDropdown">
-              <i class="fas fa-user-lock text-light "></i> Đăng Nhập
-            </a>
-            <div class="dropdown-content" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item btn btn-outline-warning" href="Đangky/Đangky.php">Đăng ký</a>
-              <a class="dropdown-item btn btn-outline-warning" href="login.php">Đăng Nhập</a>
-            </div>
-          </li>
+<a class="nav-link text-light btn btn-outline-warning font-weight-bold" href="#"><i class="fa fa-hands-helping text-light"></i>Trợ Giúp</a>
+</li> -->
+          <?php
+          if (isset($_SESSION['user'])) { ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-light btn btn-outline-warning font-weight-bold" href="#" id="navbarDropdown">
+                <i class="fas fa-user-lock text-light "></i> <?php echo $_SESSION['user']; ?>
+              </a>
+              <div class="dropdown-content" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item btn btn-outline-warning" href="../index.php?dangxuat=1">
+
+                
+                  Đăng Xuất</a>
+                <!-- <a class="dropdown-item btn btn-outline-warning" href="">Đăng Nhập</a> -->
+              </div>
+            </li>
+
+          <?php } else { ?>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-light btn btn-outline-warning font-weight-bold" href="#" id="navbarDropdown">
+                <i class="fas fa-user-lock text-light "></i> Đăng Nhập
+              </a>
+              <div class="dropdown-content" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item btn btn-outline-warning" href="action/dangky.php">Đăng ký</a>
+                <a class="dropdown-item btn btn-outline-warning" href="action/login.php">Đăng Nhập</a>
+              </div>
+            </li>
+          <?php  } ?>
+
           <li class="nav-item">
-            <a class="nav-link  a-nava font-weight-bold text-light btn btn-outline-warning" href="showgiohang.php"><i class="fa fa-cart-plus text-light"></i>
+            <a class="nav-link  a-nava font-weight-bold text-light btn btn-outline-warning" href="../giohang/showgiohang.php"><i class="fa fa-cart-plus text-light"></i>
               <span class="badge badge-danger">
                 <?php if (isset($_SESSION['cart'])) {
                   echo count($_SESSION['cart']);
                 } else {
                   echo "0";
                 };
+                // unset($_SESSION['quantity']);
                 ?>
               </span></a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="search.php" method="POST">
+        <form class="form-inline my-2 my-lg-0" action="../action/search.php" method="POST">
 
           <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Bạn muốn tìm.." aria-label="Search">
           <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Tìm Kiếm"></input>
@@ -76,10 +114,26 @@ session_start();
 
 
   </nav>
+
+
+  <!-- menu -->
+
   <!-- end menu -->
 
   <!-- slide -->
-  <div id="carouselExampleIndicators" class="carousel slide mt-1  " data-ride="carousel">
+  <div id="carouselExampleIndicators" class="carousel slide   " data-ride="carousel">
+    <?php
+    // die(var_dump($_SESSION['dangky']));
+    if (isset($_SESSION['dangky'])) { ?>
+      <div class="alert alert-success text-center" role="alert">
+        <strong><?php echo $_SESSION['dangky']; ?></strong>
+      </div>
+    <?php
+      // xoá session 
+      unset($_SESSION['dangky']);
+    }
+    ?>
+
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -109,13 +163,13 @@ session_start();
   <ul class="nav justify-content-center nav-pills nav-justified">
     <h5 class="nav-link btn btn-danger"><strong>Chọn mức giá:</strong> </h5>
     <li class="nav-item">
-      <a class="nav-link btn btn-outline-success " href="price1.php">Dưới 10000000đ</a>
+      <a class="nav-link btn btn-outline-success " href="action/price1.php">Dưới 10000000đ</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link btn btn-outline-success" href="price2.php">Từ 10000000đ - 20000000đ</a>
+      <a class="nav-link btn btn-outline-success" href="action/price2.php">Từ 10000000đ - 20000000đ</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link btn btn-outline-success" href="price3.php">Từ 20000000đ - 30000000đ</a>
+      <a class="nav-link btn btn-outline-success" href="action/price3.php">Từ 20000000đ - 30000000đ</a>
     </li>
   </ul>
 
@@ -127,19 +181,19 @@ session_start();
 
         <ul class="nav nav-pills flex-column ">
           <li class="nav-item">
-            <a class="nav-link text-center text-light " href="iphone.php">
+            <a class="nav-link text-center text-light " href="action/iphone.php">
               <!-- <strong>Iphone</strong> -->
               <img src="//cdn.tgdd.vn/Brand/1/iPhone-(Apple)42-b_52.jpg" alt="">
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-center text-light" href="samsung.php">
+            <a class="nav-link text-center text-light" href="action/samsung.php">
               <!-- <strong>Samsung</strong> -->
               <img src="//cdn.tgdd.vn/Brand/1/Samsung42-b_25.jpg" alt="">
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-center text-light" href="oppo.php">
+            <a class="nav-link text-center text-light" href="action/oppo.php">
               <!-- <strong>Oppo</strong> -->
               <img src="//cdn.tgdd.vn/Brand/1/OPPO42-b_27.png" alt="">
             </a>
@@ -148,34 +202,18 @@ session_start();
         <hr class="d-sm-none">
       </div>
       <div class="col-sm-8">
-        <div id="carouselExampleIndicators" class="carousel slide mt-1  " data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <!-- <img class="d-block w-100" src="https://cdn.tgdd.vn/2020/11/banner/800-300-800x300-6.png" alt="First slide"> -->
-              <img class="d-block w-100" src="https://cdn.tgdd.vn/2020/10/banner/big-pk-800-300-800x300-1.png" alt="First slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block w-100" src="https://cdn.tgdd.vn/2020/11/banner/800-300-800x300-7.png " alt="Second slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block w-100" src="https://cdn.tgdd.vn/2020/11/banner/800-300-800x300-6.png" alt="Third slide">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
+
+
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/SQIbeAk-bFA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        <div class="content">
+          <h1 class="text-danger">Sản phẩm mới ra...</h1>
+
+
+
         </div>
-        <br>
+
+
       </div>
 
     </div>
@@ -190,20 +228,26 @@ session_start();
     </div> -->
   <div class="container ">
     <div class="row mt-5 ">
-      <h2 class="list-product-title ">Sản Phẩm</h2>
+      <h2 class="list-product-title ">Sản Phẩm <a href="../giohang/showgiohang.php" class="text-danger text-center"> Danh sách giỏ hàng</a></h2>
+      <!-- kiểm tra lai  -->
+      <!-- <?php if (isset($_SESSION['thangcong'])) : ?>
+
+        <p class="text-danger"><?= $_SESSION['thangcong'] ?></p>
+      <?php endif;
+            unset($_SESSION['thangcong']) ?> -->
       <div class="list-product-subtitle">
         <p><strong>Liệt Kê Sản Phẩm</strong> </p>
       </div>
       <div class="product-group">
         <div class="row">
-          <?php foreach ($result as $product) : ?>
+          <?php foreach ($product as $product) : ?>
             <div class="col-md-3 col-ms-6 col-12">
               <div class="card card-product mb-3">
                 <img class="card-img-top img-product" src="<?= $product['ImgProduct']  ?>" alt="Card image cap ">
                 <div class="card-body">
                   <h5 class="card-title"><?= $product['ProductName'] ?><span class="badge badge-secondary badge-danger">New</span></h5>
                   <p class="card-text text-danger"><?= number_format($product['price']) ?> Đ</p>
-                  <form action="product/showproduct.php" method="post">
+                  <form action="action/showproduct.php" method="post">
                     <input type="hidden" name="id" value="<?= $product['idProduct'] ?>">
 
                     <button class="btn btn-outline-success "><strong>Mua Ngay</strong> </button>
@@ -229,135 +273,22 @@ session_start();
   </div>
   <!-- end show -->
   <div class="jumbotron text-center " style="margin-bottom:0">
-    <footer class="page-footer font-small indigo bg-warning">
-
-      <!-- Footer Links -->
-      <div class="container text-center text-md-left">
-
-        <!-- Grid row -->
-        <div class="row">
-
-          <!-- Grid column -->
-          <div class="col-md-3 mx-auto">
-
-            <!-- Links -->
-
-
-            <ul class="list-unstyled">
-              <li>
-                <a href="#!" class="text-dark">Lịch Sử Mua Hàng</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Tìm Hiểu Về Mua Trả Góp</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Chính Sách Bảo Hành</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Chính Sách Đổi Trả</a>
-              </li>
-            </ul>
-
-          </div>
-          <!-- Grid column -->
-
-          <hr class="clearfix w-100 d-md-none">
-
-          <!-- Grid column -->
-          <div class="col-md-3 mx-auto">
-
-            <!-- Links -->
-
-
-            <ul class="list-unstyled">
-              <li>
-                <a href="#!" class="text-dark">Giới Thiệu Công Ty</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Tuyển Dụng</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Gửi Góp Ý,Khiếu Nại</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark">Tìm Siêu Thị</a>
-              </li>
-            </ul>
-
-          </div>
-          <!-- Grid column -->
-
-
-          <!-- Grid column -->
-
-          <hr class="clearfix w-100 d-md-none">
-
-          <!-- Grid column -->
-          <div class="col-md-3 mx-auto">
-
-            <!-- Links -->
-
-            <ul class="list-unstyled">
-              <li>
-                <a href="#!" class="text-dark"><i class="fab fa-facebook-square">Facebook</i></a>
-              </li>
-              <li>
-                <a href="#!" class="text-danger"><i class="fab fa-instagram-square text-danger"></i>instagram</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark"><i class="fab fa-twitter-square"></i>twitter</a>
-              </li>
-              <li>
-                <a href="#!" class="text-dark"><i class="fas fa-envelope-square"></i>email</a>
-              </li>
-
-            </ul>
-
-          </div>
-          <hr class="clearfix w-100 d-md-none">
-
-          <!-- Grid column -->
-          <div class="col-md-3 mx-auto">
-
-            <!-- Links -->
-
-
-            <ul class="list-unstyled">
-
-              <!-- <li>
-                <a href="#!" class="text-dark">Gọi Khiếu Nại</a>
-              </li>  -->
-              <li>
-                <a href="#!" class="text-dark">
-                  <img src="../imge/google.png" alt="">
-                </a>
-              </li>
-
-              <li>
-                <a href="#!" class="text-dark">
-                  <img src="../imge/appstor.png" alt="">
-                </a>
-              </li>
-            </ul>
-
-          </div>
-          <!-- Grid column -->
-
-        </div>
-        <!-- Grid row -->
-
-      </div>
-      <!-- Footer Links -->
-
-      <!-- Copyright -->
-      <div class="footer-copyright text-center py-3 bg- bg-dark">© 2020 Cửa Hàng Điện Thoại:
-        <a href="https://mdbootstrap.com/"> DienThoai.com</a>
-      </div>
-      <!-- Copyright -->
-
-    </footer>
+    <?php require_once "noidung/footer.php" ?>
   </div>
+  <script>
+    var video = document.getElementById("myVideo");
+    var btn = document.getElementById("myBtn");
 
+    function myFunction() {
+      if (video.paused) {
+        video.play();
+        btn.innerHTML = "Pause";
+      } else {
+        video.pause();
+        btn.innerHTML = "Play";
+      }
+    }
+  </script>
   <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

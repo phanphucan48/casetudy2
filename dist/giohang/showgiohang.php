@@ -1,15 +1,24 @@
 <?php
-session_start();
-include "./connect.php";
+require_once('../database/connect.php');
+require_once('../database/common.php');
+// require_once('../database/giohang.php');
+
 $quantity = !empty($_GET['quantity']) ? (int)$_GET['quantity'] : 1;
 $action = !empty($_GET['action']) ? (int)$_GET['action'] : 'add';
 // $query = "SELECT * FROM cuahangdienthoai.product ";
 $tongtatca = 0;
-
+// $id = ($_GET['id']) ? (int)$_GET['id'] : 0;
 // $stmt = $pdo->query($query);
 // $stmt = $stmt->fetch();
 
 
+if ($action == 'update') {
+    $quantity = $quantity >= 1 ? $quantity : 1;
+    if (isset($_SESSION['cart'][$_GET['id']])) {
+        $_SESSION['cart'][$_GET['id']]['quantity'] = $quantity;
+        $_SESSION['quantity'] = $quantity;
+    }
+}
 $product = !empty($_SESSION['cart']) ? $_SESSION['cart'] : [];
 if (isset($_GET['delete'])) {
     $delete = $_GET['delete'];
@@ -17,11 +26,6 @@ if (isset($_GET['delete'])) {
         unset($_SESSION['cart'][$delete]);
     }
 }
-if ($_SESSION['cart'] == []) {
-    header('location:./carttrong.php');
-}
-
-
 
 
 
@@ -52,7 +56,7 @@ if ($_SESSION['cart'] == []) {
                             <th>Quantity</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Total</th>
-                            <th> </th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +88,7 @@ if ($_SESSION['cart'] == []) {
                                     </div>
                                 </td>
                                 <td class="col-sm-1 col-md-1" style="text-align: center">
-                                    <form action="giohang.php">
+                                    <form action="">
                                         <input type="hidden" name="id" value="<?= $item['idProduct'] ?>">
                                         <input type="hidden" name="action" value="update">
                                         <input type="number" name="quantity" class="form-control" id="exampleInputEmail1" value="<?= $item['quantity'] ?>">
@@ -94,7 +98,7 @@ if ($_SESSION['cart'] == []) {
                                 <td class="col-sm-1 col-md-1 text-center text-danger"><strong><?= number_format($item['price']) ?>đ</strong></td>
                                 <td class="col-sm-1 col-md-1 text-center text-danger"><strong> <?= number_format($total) ?>đ </strong></td>
                                 <td class="col-sm-2 col-md-2">
-                                    <a href="showgiohang.php?delete=<?= $item['idProduct']; ?>" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="?delete=<?= $item['idProduct']; ?>" class="btn btn-sm btn-danger">Delete</a>
 
                                     </button></td>
                             </tr>
@@ -110,6 +114,7 @@ if ($_SESSION['cart'] == []) {
 
 
                                 <h2 class="text-danger"><strong><?= number_format($tongtatca) ?>đ</strong></h2>
+                                <?php $_SESSION['tongtatca'] = $tongtatca ?>
                             </td>
                             <td></td>
                             <td></td>
@@ -119,7 +124,11 @@ if ($_SESSION['cart'] == []) {
                     </tbody>
                     <tr>
                         <td>
-                            <a href="index.php" class="btn btn-sm btn-success">Trở về</a>
+                            <a href="../index.php" class="btn btn-sm btn-danger">Trở về</a>
+
+                        </td>
+                        <td>
+                            <a href="../thanhtoan.php" class="btn btn-sm btn-success">Thanh toán</a>
                         </td>
                     </tr>
                 </table>

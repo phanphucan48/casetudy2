@@ -1,8 +1,6 @@
 <?php
-include "./connect.php";
-session_start();
-
-
+require_once "../database/logout.php";
+require_once "../database/common.php";
 
 ?>
 <!DOCTYPE html>
@@ -33,7 +31,7 @@ session_start();
             </div>
         </div>
         <div class="col-md-1 mx-auto d-block ">
-            <a href="index.php" class="btn btn-outline-danger " role="button">Trở Lại</a>
+            <a href="../index.php" class="btn btn-outline-danger " role="button">Trở Lại</a>
         </div>
 
     </div>

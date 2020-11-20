@@ -22,4 +22,9 @@
   cursor: pointer;
   background: #0062cc;
   color: #fff;
+  outline: none;
+}
+
+.dangky {
+  background-image: linear-gradient(to right, #f83600 50%, #f9d423 150%);
 }
