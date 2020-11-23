@@ -110,6 +110,7 @@ if (isset($_POST["submit"])) {
                     </div>
                     <button type="submit" class="btnSubmit bg-success outline" name="submit">Đăng ký</button>
                     <button type="reset" class="btnSubmit">Làm Mới</button>
+                    <a href="../index.php" class="btn btn-danger text-white text-center" role="button"><strong>Về Trang Chủ</strong> </a>
                     </form>
                 </div>
             </div>

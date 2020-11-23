@@ -6217,7 +6217,6 @@ a.close.disabled {
 
 .carousel {
   position: relative;
- 
 }
 
 .carousel.pointer-event {
@@ -10700,6 +10699,9 @@ body {
 }
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.dropdown-content a:hover {
+  background-color: rgb(186, 214, 25);
 }
 /* list product */
 .list-product-title {

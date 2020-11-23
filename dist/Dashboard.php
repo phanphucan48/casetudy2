@@ -71,18 +71,18 @@
                  <div class="sb-sidenav-menu">
                      <div class="nav">
 
-                         <a class="nav-link" href="index.html">
+                         <a class="nav-link" href="oder/oder.php">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                              Đơn Đặt hàng
                          </a>
-                         <a class="nav-link" href="index.html">
+                         <a class="nav-link" href="admin/admin.php">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                              Thêm admin
                          </a>
-                         <a class="nav-link" href="index.html">
+                         <!-- <a class="nav-link" href="index.html">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                              Đơn Hàng
-                         </a>
+                         </a> -->
                          <a class="nav-link" href="index.html">
                              <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                              Khách Hàng
@@ -113,27 +113,27 @@
                      <div class="row">
                          <div class="col-xl-3 col-md-6">
                              <div class="card bg-primary text-white mb-4">
-                                 <div class="card-body">Thể loại</div>
+                                 <div class="card-body">Đơn Đặt Hàng</div>
                                  <div class="card-footer d-flex align-items-center justify-content-between">
-                                     <a class="small text-white stretched-link" href="#">View Details</a>
+                                     <a class="small text-white stretched-link" href="oder/oder.php">Xem Thêm</a>
                                      <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                  </div>
                              </div>
                          </div>
                          <div class="col-xl-3 col-md-6">
                              <div class="card bg-warning text-white mb-4">
-                                 <div class="card-body">Đặt Hàng</div>
+                                 <div class="card-body">Thêm Admin</div>
                                  <div class="card-footer d-flex align-items-center justify-content-between">
-                                     <a class="small text-white stretched-link" href="#">View Details</a>
+                                     <a class="small text-white stretched-link" href="admin/admin.php">Xem Thêm</a>
                                      <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                  </div>
                              </div>
                          </div>
                          <div class="col-xl-3 col-md-6">
                              <div class="card bg-success text-white mb-4">
-                                 <div class="card-body">Đã bán</div>
+                                 <div class="card-body">Khách Hàng</div>
                                  <div class="card-footer d-flex align-items-center justify-content-between">
-                                     <a class="small text-white stretched-link" href="#">View Details</a>
+                                     <a class="small text-white stretched-link" href="khachhang/khachhang.php">Xem Thêm</a>
                                      <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                  </div>
                              </div>
@@ -142,7 +142,7 @@
                              <div class="card bg-danger text-white mb-4">
                                  <div class="card-body">Tồn Kho</div>
                                  <div class="card-footer d-flex align-items-center justify-content-between">
-                                     <a class="small text-white stretched-link" href="#">View Details</a>
+                                     <a class="small text-white stretched-link" href="../action/showproduct.php">Xem Thêm</a>
                                      <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                  </div>
                              </div>
@@ -166,6 +166,7 @@
                                              <th>Price</th>
                                              <th>Brand</th>
                                              <th>Date</th>
+                                             <th>idbrank</th>
                                              <th>Function</th>
 
                                          </tr>
@@ -182,6 +183,7 @@
                                                  <td><?= $product['price'] ?></td>
                                                  <td><?= $product['brank'] ?></td>
                                                  <td><?= $product['date'] ?></td>
+                                                 <td><?= $product['idbrank'] ?></td>
 
                                                  <td>
                                                      <a class="btn btn-info" href="editproduct.php?idEdit=<?= $product['idProduct']; ?>">Edit</a>

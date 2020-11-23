@@ -53,15 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         </div>
                         <div class="col-md-6 d-flex flex-column align-items-left">
-                            <div class="product-title"><strong><?= $product['ProductName'] ?></strong> </div>
+                            <div class="product-title"><strong>
+                                    <h1><?= $product['ProductName'] ?></h1>
+                                </strong> </div>
                             <div class="product-desc"></div>
                             <div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>
                             <hr>
-                            <div class="product-price text-danger"><?= number_format($product['price']) ?> Đ</div>
+                            <div class="product-price text-danger">
+                                <h2><?= number_format($product['price']) ?>Đ </h2>
+                            </div>
                             <div class="product-stock">In Stock</div>
                             <hr>
                             <div class="btn-group cart">
-                                <a class="btn btn btn-info bg-primary " href="../database/giohang.php?idpro=<?= $product['idProduct']; ?>">Add Cart</a>
+                                <a class="btn btn btn-info bg-primary " href="../database/giohang.php?idpro=<?= $product['idProduct']; ?>">Thêm Vào Giỏ Hàng</a>
                             </div>
                             <div class="btn-group wishlist">
                                 <a href="../index.php" class="btn btn-info bg-danger">Trở Lại</a>

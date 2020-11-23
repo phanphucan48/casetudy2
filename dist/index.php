@@ -1,7 +1,7 @@
 <?php
+require_once "database/common.php";
 require_once "database/connect.php";
 require_once "database/product.php";
-require_once "database/common.php";
 // require_once "action/login.php";
 // if (isset($_SESSION['cart'])) {
 //   echo "<pre />";
@@ -71,7 +71,7 @@ $product = $product->showProduct();
               <div class="dropdown-content" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item btn btn-outline-warning" href="../index.php?dangxuat=1">
 
-                
+
                   Đăng Xuất</a>
                 <!-- <a class="dropdown-item btn btn-outline-warning" href="">Đăng Nhập</a> -->
               </div>
@@ -228,7 +228,7 @@ $product = $product->showProduct();
     </div> -->
   <div class="container ">
     <div class="row mt-5 ">
-      <h2 class="list-product-title ">Sản Phẩm <a href="../giohang/showgiohang.php" class="text-danger text-center"> Danh sách giỏ hàng</a></h2>
+      <h2 class="list-product-title ">Sản Phẩm <a href="../giohang/showgiohang.php" class="text-danger text-center"><i class="fas fa-luggage-cart"></i> Danh sách giỏ hàng</a></h2>
       <!-- kiểm tra lai  -->
       <!-- <?php if (isset($_SESSION['thangcong'])) : ?>
 
